@@ -119,10 +119,10 @@ folder = work_dir + "out/predictions/"
 # ------------------------------------------------------------------------------------
 
 os.chdir(work_dir + "out/graphics/")
-if not os.path.exists("1_merged-comp-arrays"):
+if not os.path.exists("merged-comp-arrays"):
     for k in class_indices:
-        os.makedirs("1_merged-comp-arrays/B-" + labels[k].name)
-        os.makedirs("1_merged-comp-arrays/ML-" + labels[k].name)
+        os.makedirs("merged-comp-arrays/B-" + labels[k].name)
+        os.makedirs("merged-comp-arrays/ML-" + labels[k].name)
 
 ml_list = sorted(os.listdir(folder+"/ML"))
 bayes_list = sorted(os.listdir(folder+"/B"))
@@ -143,9 +143,9 @@ for k in class_indices:
         if im % 10 == 0: print("%d/%d Images processed" % (im, n))
         for k in class_indices:
             # save array with merged connected components in folder "merged/"
-            np.save("1_merged-comp-arrays/ML-" + labels[k].name + "/" + ml_list[im],
+            np.save("merged-comp-arrays/ML-" + labels[k].name + "/" + ml_list[im],
                     merge_cc(folder + "/ML/" + ml_list[im], labels[k].color))
-            np.save("1_merged-comp-arrays/B-" + labels[k].name + "/" + bayes_list[im],
+            np.save("merged-comp-arrays/B-" + labels[k].name + "/" + bayes_list[im],
                     merge_cc(folder + "/B/" + bayes_list[im], labels[k].color))
     print("%d/%d Images processed" % (n,n))
 

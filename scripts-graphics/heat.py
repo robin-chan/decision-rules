@@ -76,7 +76,7 @@ gt_list     = sorted(os.listdir(ground_truth_dir))
 ml_list     = sorted(os.listdir(work_dir + "out/predictions/ML/"))
 bayes_list  = sorted(os.listdir(work_dir + "out/predictions/B/"))
 n = len(gt_list)
-shape = 480*640 ### height times width, number of pixel-positions
+shape = resolution[0]*resolution[1] ### height times width, number of pixel-positions
 
 #####################################################################################
 #
@@ -99,7 +99,7 @@ for k in class_indices:
 
         # load components
         ml_comp = np.load("merged-comp-arrays/ML-" + labels[k].name + "/" + ml_list[im] + ".npy").flatten()
-        gt_array = np.asarray(Image.open(ground_truth_dir + gt_list[im]).resize((640, 480)))
+        gt_array = np.asarray(Image.open(ground_truth_dir + gt_list[im]).resize((resolution[0], resolution[1])))
         gt_comp = label(((gt_array == labels[k].color).all(axis=2)).astype(int)).flatten()
 
         # count non-detected pixels (false negatives)
@@ -114,8 +114,8 @@ for k in class_indices:
             if np.count_nonzero(check) == 0:
                 heatmap_obj_ml += (gt_comp == inst).astype(int)
 
-    heatmap_px_ml.resize((480,640))
-    heatmap_obj_ml.resize((480,640))
+    heatmap_px_ml.resize((resolution[1],resolution[0]))
+    heatmap_obj_ml.resize((resolution[1],resolution[0]))
 
     # ----------------------------------------------------------------------------------------
     # Bayes heatmaps
@@ -129,7 +129,7 @@ for k in class_indices:
 
         # load components
         bayes_comp = np.load("merged-comp-arrays/B-" + labels[k].name + "/" + bayes_list[im] + ".npy").flatten()
-        gt_array = np.asarray(Image.open(ground_truth_dir + gt_list[im]).resize((640, 480)))
+        gt_array = np.asarray(Image.open(ground_truth_dir + gt_list[im]).resize((resolution[0], resolution[1])))
         gt_comp = label(((gt_array == labels[k].color).all(axis=2)).astype(int)).flatten()
 
         # count non-detected pixels (false negatives)
@@ -144,8 +144,8 @@ for k in class_indices:
             if np.count_nonzero(check) == 0:
                 heatmap_obj_bay += (gt_comp == inst).astype(int)
 
-    heatmap_px_bay.resize((480,640))
-    heatmap_obj_bay.resize((480,640))
+    heatmap_px_bay.resize((resolution[1],resolution[0]))
+    heatmap_obj_bay.resize((resolution[1],resolution[0]))
 
     # ----------------------------------------------------------------------------------------
     # Save heatmaps
